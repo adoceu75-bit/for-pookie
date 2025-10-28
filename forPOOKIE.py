@@ -9,7 +9,7 @@ Original file is located at
 
 import streamlit as st
 
-st.title("Responde Certinho 😉")
+st.title("💘 Programa do Amor 💘")
 
 # Entrada do nome
 pessoa = st.text_input("Insira seu nome:")
@@ -17,36 +17,37 @@ pessoa = st.text_input("Insira seu nome:")
 # Inicializa variáveis de sessão
 if "contador" not in st.session_state:
     st.session_state.contador = 0
-if "continuar" not in st.session_state:
-    st.session_state.continuar = True
+if "historico" not in st.session_state:
+    st.session_state.historico = []
+if "parar" not in st.session_state:
+    st.session_state.parar = False
 
 # Verifica se é a pessoa certa
 if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
 
-    # Enquanto ela quiser continuar
-    if st.session_state.continuar:
-
-        st.write("Você deseja que eu continue te amando (responde com SIM ou NAO)?")
+    if not st.session_state.parar:
+        st.write("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
 
         col1, col2 = st.columns(2)
 
         with col1:
             if st.button("💖 SIM"):
                 st.session_state.contador += 1
-                st.write("Eu te amo 💖")
+                st.session_state.historico.append("Eu te amo 💖")
 
                 if st.session_state.contador >= 4:
-                    st.balloons()
-                    st.error("EU VOU TE AMAR PRA SEMPRE 💘")
-                    st.session_state.continuar = False
+                    st.session_state.historico.append("EU VOU TE AMAR PRA SEMPRE 💘")
+                    st.session_state.parar = True
 
         with col2:
             if st.button("💔 NAO"):
-                st.warning("Ok, mas eu continuo te amando 😘")
-                st.session_state.continuar = False
-    else:
-        st.write("Fim do nosso amor... (mas eu ainda te amo) 💞")
+                st.session_state.historico.append("Ok, mas eu continuo te amando 😘")
+                st.session_state.parar = True
+
+    # Exibe histórico (como se fosse as repetições da conversa)
+    for mensagem in st.session_state.historico:
+        st.write(mensagem)
 
 else:
     if pessoa:
