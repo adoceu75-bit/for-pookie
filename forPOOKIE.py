@@ -26,13 +26,14 @@ if "parar" not in st.session_state:
 if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
 
-    if not st.session_state.parar:
-        st.write("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
+    # A pergunta aparece sempre (enquanto não digitar "NAO")
+    st.write("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
 
-        col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-        with col1:
-            if st.button("💖 SIM"):
+    with col1:
+        if st.button("💖 SIM"):
+            if not st.session_state.parar:
                 st.session_state.contador += 1
                 st.session_state.historico.append("Eu te amo 💖")
 
@@ -40,12 +41,13 @@ if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
                     st.session_state.historico.append("EU VOU TE AMAR PRA SEMPRE 💘")
                     st.session_state.parar = True
 
-        with col2:
-            if st.button("💔 NAO"):
+    with col2:
+        if st.button("💔 NAO"):
+            if not st.session_state.parar:
                 st.session_state.historico.append("Ok, mas eu continuo te amando 😘")
                 st.session_state.parar = True
 
-    # Exibe histórico (como se fosse as repetições da conversa)
+    # Exibe histórico das respostas (como se fosse repetição)
     for mensagem in st.session_state.historico:
         st.write(mensagem)
 
