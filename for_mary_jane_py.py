@@ -7,25 +7,29 @@ Original file is located at
     https://colab.research.google.com/drive/1C5UeXAU1g3h_8Ib4AClpTcgNK_9PBlzm
 """
 
-pessoa = str(input("Insira seu nome: "))
-contador = 0
+import streamlit as st
 
-if pessoa == "Pookie" or pessoa == "Maria Júlia" or pessoa == "Maria":
-  print("Eu te amo")
+st.title("💖 Programa do Amor 💖")
 
-  while pessoa == "Pookie" or pessoa == "Maria Júlia" or pessoa == "Maria":
-    pergunta=str(input("Você deseja que eu continue te amando (responde com SIM ou NAO) ? SIM/NAO   "))
-    contador += 1
+pessoa = st.text_input("Insira seu nome:")
 
-    if pergunta == "SIM":
-      print("Eu te amo")
+if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
+    st.success("Eu te amo 💕")
+    contador = st.session_state.get("contador", 0)
 
-    elif pergunta ==  "NAO":
-      print("Ok, mas eu continuo te amando")
-      break
+    pergunta = st.text_input("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
 
-    if contador >= 4:
-      print("EU VOU TE AMAR PRA SEMPRE")
+    if pergunta.upper() == "SIM":
+        st.session_state["contador"] = contador + 1
+        st.write("Eu te amo 💖")
+
+    elif pergunta.upper() == "NAO":
+        st.warning("Ok, mas eu continuo te amando 😘")
+
+    if st.session_state.get("contador", 0) >= 4:
+        st.balloons()
+        st.error("EU VOU TE AMAR PRA SEMPRE 💘")
 
 else:
-  print("Sai de perto")
+    if pessoa:
+        st.write("Sai de perto 😠")
