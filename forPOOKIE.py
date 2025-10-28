@@ -14,7 +14,7 @@ st.title("💞 Programa do Amor 💞")
 # Entrada do nome
 pessoa = st.text_input("Insira seu nome:")
 
-# Inicializa variáveis de sessão
+# Inicializa variáveis persistentes
 if "contador" not in st.session_state:
     st.session_state.contador = 0
 if "historico" not in st.session_state:
@@ -29,10 +29,10 @@ if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
     st.session_state.ativo = True
 
-# Enquanto estiver ativo e ainda não parar
+# Enquanto estiver ativo e ainda não for “parar”
 if st.session_state.ativo and not st.session_state.parar:
 
-    # A pergunta aparece sempre
+    # A pergunta continua aparecendo
     st.markdown("### 💌 Você deseja que eu continue te amando? (responde com SIM ou NAO):")
 
     col1, col2 = st.columns(2)
@@ -40,8 +40,9 @@ if st.session_state.ativo and not st.session_state.parar:
     with col1:
         if st.button("💖 SIM"):
             st.session_state.contador += 1
-            st.session_state.historico.append("Eu te amo 💖")
+            st.session_state.historico.append(f"{st.session_state.contador}️⃣ Eu te amo 💖")
 
+            # Após 4 vezes, exibe mensagem final
             if st.session_state.contador >= 4:
                 st.session_state.historico.append("EU VOU TE AMAR PRA SEMPRE 💘")
                 st.session_state.parar = True
@@ -52,12 +53,12 @@ if st.session_state.ativo and not st.session_state.parar:
             st.session_state.historico.append("Ok, mas eu continuo te amando 😘")
             st.session_state.parar = True
 
-# Exibe todo o histórico (como se fosse um loop de respostas)
+# Exibe histórico de respostas (simula repetição)
 if st.session_state.historico:
-    st.write("### ❤️ Histórico do nosso amor:")
-    for msg in st.session_state.historico:
-        st.write(msg)
+    st.markdown("### ❤️ Histórico do nosso amor:")
+    for mensagem in st.session_state.historico:
+        st.write(mensagem)
 
-# Se a pessoa não for a certa
+# Se não for uma pessoa especial
 elif pessoa:
     st.write("Sai de perto 😠")
