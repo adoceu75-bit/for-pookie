@@ -9,7 +9,7 @@ Original file is located at
 
 import streamlit as st
 
-st.title("💘 Programa do Amor 💘")
+st.title("Responde certinho")
 
 # Entrada do nome
 pessoa = st.text_input("Insira seu nome:")
