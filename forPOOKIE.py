@@ -9,36 +9,45 @@ Original file is located at
 
 import streamlit as st
 
-st.title("Responde Certinho 🤗")
+st.title("Responde Certinho 😉")
 
-# entrada do nome
+# Entrada do nome
 pessoa = st.text_input("Insira seu nome:")
 
-# inicializa contador na sessão, se ainda não existir
+# Inicializa variáveis de sessão
 if "contador" not in st.session_state:
     st.session_state.contador = 0
+if "continuar" not in st.session_state:
+    st.session_state.continuar = True
 
-# lógica principal
+# Verifica se é a pessoa certa
 if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
 
-    # mostra pergunta só se ainda não respondeu "NAO"
-    if "acabou" not in st.session_state or not st.session_state.acabou:
-        pergunta = st.text_input("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
+    # Enquanto ela quiser continuar
+    if st.session_state.continuar:
 
-        if pergunta.upper() == "SIM":
-            st.session_state.contador += 1
-            st.write("Eu te amo 💖")
+        st.write("Você deseja que eu continue te amando (responde com SIM ou NAO)?")
 
-            # se chegar a 4 respostas "SIM"
-            if st.session_state.contador >= 4:
-                st.balloons()
-                st.error("EU VOU TE AMAR PRA SEMPRE 💘")
-                st.session_state.acabou = True
+        col1, col2 = st.columns(2)
 
-        elif pergunta.upper() == "NAO":
-            st.warning("Ok, mas eu continuo te amando 😘")
-            st.session_state.acabou = True
+        with col1:
+            if st.button("💖 SIM"):
+                st.session_state.contador += 1
+                st.write("Eu te amo 💖")
+
+                if st.session_state.contador >= 4:
+                    st.balloons()
+                    st.error("EU VOU TE AMAR PRA SEMPRE 💘")
+                    st.session_state.continuar = False
+
+        with col2:
+            if st.button("💔 NAO"):
+                st.warning("Ok, mas eu continuo te amando 😘")
+                st.session_state.continuar = False
+    else:
+        st.write("Fim do nosso amor... (mas eu ainda te amo) 💞")
+
 else:
     if pessoa:
         st.write("Sai de perto 😠")
