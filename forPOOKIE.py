@@ -9,7 +9,7 @@ Original file is located at
 
 import streamlit as st
 
-st.title("Responde certinho")
+st.title("💞 Programa do Amor 💞")
 
 # Entrada do nome
 pessoa = st.text_input("Insira seu nome:")
@@ -19,38 +19,45 @@ if "contador" not in st.session_state:
     st.session_state.contador = 0
 if "historico" not in st.session_state:
     st.session_state.historico = []
+if "ativo" not in st.session_state:
+    st.session_state.ativo = False
 if "parar" not in st.session_state:
     st.session_state.parar = False
 
-# Verifica se é a pessoa certa
+# Quando o nome for um dos especiais
 if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
+    st.session_state.ativo = True
 
-    # A pergunta aparece sempre (enquanto não digitar "NAO")
-    st.write("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
+# Enquanto estiver ativo e ainda não parar
+if st.session_state.ativo and not st.session_state.parar:
+
+    # A pergunta aparece sempre
+    st.markdown("### 💌 Você deseja que eu continue te amando? (responde com SIM ou NAO):")
 
     col1, col2 = st.columns(2)
 
     with col1:
         if st.button("💖 SIM"):
-            if not st.session_state.parar:
-                st.session_state.contador += 1
-                st.session_state.historico.append("Eu te amo 💖")
+            st.session_state.contador += 1
+            st.session_state.historico.append("Eu te amo 💖")
 
-                if st.session_state.contador >= 4:
-                    st.session_state.historico.append("EU VOU TE AMAR PRA SEMPRE 💘")
-                    st.session_state.parar = True
+            if st.session_state.contador >= 4:
+                st.session_state.historico.append("EU VOU TE AMAR PRA SEMPRE 💘")
+                st.session_state.parar = True
+                st.balloons()
 
     with col2:
         if st.button("💔 NAO"):
-            if not st.session_state.parar:
-                st.session_state.historico.append("Ok, mas eu continuo te amando 😘")
-                st.session_state.parar = True
+            st.session_state.historico.append("Ok, mas eu continuo te amando 😘")
+            st.session_state.parar = True
 
-    # Exibe histórico das respostas (como se fosse repetição)
-    for mensagem in st.session_state.historico:
-        st.write(mensagem)
+# Exibe todo o histórico (como se fosse um loop de respostas)
+if st.session_state.historico:
+    st.write("### ❤️ Histórico do nosso amor:")
+    for msg in st.session_state.historico:
+        st.write(msg)
 
-else:
-    if pessoa:
-        st.write("Sai de perto 😠")
+# Se a pessoa não for a certa
+elif pessoa:
+    st.write("Sai de perto 😠")
