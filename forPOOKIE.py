@@ -9,27 +9,36 @@ Original file is located at
 
 import streamlit as st
 
-st.title("Responde De Vdd 😉")
+st.title("💖 Programa do Amor 💖")
 
+# entrada do nome
 pessoa = st.text_input("Insira seu nome:")
-contador = 0
 
+# inicializa contador na sessão, se ainda não existir
+if "contador" not in st.session_state:
+    st.session_state.contador = 0
+
+# lógica principal
 if pessoa in ["Pookie", "Maria Júlia", "Maria"]:
     st.success("Eu te amo 💕")
-    
-    while pessoa ["Pookie", "Maria Júlia", "Maria"]:  
-        pergunta = st.text_input("Você deseja que eu continue te amando? (responde com SIM ou NAO): ")
-        contador += 1
-        
-        if pergunta == "SIM":
+
+    # mostra pergunta só se ainda não respondeu "NAO"
+    if "acabou" not in st.session_state or not st.session_state.acabou:
+        pergunta = st.text_input("Você deseja que eu continue te amando? (responde com SIM ou NAO):")
+
+        if pergunta.upper() == "SIM":
+            st.session_state.contador += 1
             st.write("Eu te amo 💖")
 
-        elif pergunta == "NAO":
+            # se chegar a 4 respostas "SIM"
+            if st.session_state.contador >= 4:
+                st.balloons()
+                st.error("EU VOU TE AMAR PRA SEMPRE 💘")
+                st.session_state.acabou = True
+
+        elif pergunta.upper() == "NAO":
             st.warning("Ok, mas eu continuo te amando 😘")
-            break
-
-        if contador >= 4:
-            st.success("EU VOU TE AMAR PRA SEMPRE 💘")
-
+            st.session_state.acabou = True
 else:
-    st.warning("Sai de perto 😠")
+    if pessoa:
+        st.write("Sai de perto 😠")
